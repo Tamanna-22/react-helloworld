@@ -14,14 +14,14 @@ jobs:
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3.7.1
         with:
-          github-token: ${{ secrets.token}}
+          github-token: ${{ secrets.token }}
           # skip-version-file: 'true'
 
       - name: create release
         uses: actions/create-release@v1
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
         env:
-          github-token: ${{ secrets.token}}
+          github-token: ${{ secrets.token }}
         with:
           tag_name: ${{ steps.changelog.outputs.tag }}
           release_name: ${{ steps.changelog.outputs.tag }}
