@@ -1,0 +1,47 @@
+name: Releasess
+on:
+  push:
+    branches:
+      - HOLA-1
+jobs:
+  release-next-app-version:
+    name: Release Jira Version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: conventional Changelog Action
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3.7.1
+        with:
+          github-token: ${{ secrets.token }}
+          # skip-version-file: 'true'
+
+      - name: create release
+        uses: actions/create-release@v1
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        env:
+          github-token: ${{ secrets.token }}
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          release_name: ${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
+      - name: Sentry Release
+        uses: getsentry/action-release@v1.2.0
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN}}
+          SENTRY_ORG: unthinkable-ot
+          SENTRY_PROJECT: javascript
+        with:
+          version: ${{ steps.changelog.outputs.tag }}
+      - name: Jira Release    
+        uses: StalemateInc/jira-release-action@v1.0.0
+        with:
+          email: tamanna.sehrawat@unthinkable.co
+          api_token: ${{ secrets.api_token}}
+          release_name: Release-${{ github.run_number }} (FE)
+          #    tickets: TESTING-9,TESTING-11
+          subdomain: tamannasehrawat822
+          jira_project: Hola testing
+          #  create: true
+          release: true
