@@ -14,7 +14,7 @@ jobs:
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3.7.1
         with:
-          github-token: ghp_CipKmH587**eTK****Yn4osy1bUdrj
+          github-token: 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
           # skip-version-file: 'true'
 
       - name: create release
@@ -29,7 +29,7 @@ jobs:
       - name: Sentry Release
         uses: getsentry/action-release@v1.2.0
         env:
-          SENTRY_AUTH_TOKEN: 56a1c04e9b2311ed80110e979c615950
+          SENTRY_AUTH_TOKEN: 989040d49dbd41c3aec93b0c7de9fcb60282cb8d38fc4c0fb0c0bc568cea584f
           SENTRY_ORG: unthinkable-ot
           SENTRY_PROJECT: javascript
         with:
