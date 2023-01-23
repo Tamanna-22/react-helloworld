@@ -14,14 +14,14 @@ jobs:
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3.7.1
         with:
-          github-token: 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
+          github-token: ${{ secrets.GITHUB_TOKEN}}
           # skip-version-file: 'true'
 
       - name: create release
         uses: actions/create-release@v1
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
         env:
-          GITHUB_TOKEN: ghp_CipKm****EeT******KYn4osy1bUdrj
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
         with:
           tag_name: ${{ steps.changelog.outputs.tag }}
           release_name: ${{ steps.changelog.outputs.tag }}
@@ -29,7 +29,7 @@ jobs:
       - name: Sentry Release
         uses: getsentry/action-release@v1.2.0
         env:
-          SENTRY_AUTH_TOKEN: 989040d49dbd41c3aec93b0c7de9fcb60282cb8d38fc4c0fb0c0bc568cea584f
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN}}
           SENTRY_ORG: unthinkable-ot
           SENTRY_PROJECT: javascript
         with:
@@ -38,7 +38,7 @@ jobs:
         uses: StalemateInc/jira-release-action@v1.0.0
         with:
           email: tamanna.sehrawat@unthinkable.co
-          api_token: OvGMeVSiVoJPrirVDUFs03C8
+          api_token: ${{ secrets.api_token}}
           release_name: Release-${{ github.run_number }} (FE)
           #    tickets: TESTING-9,TESTING-11
           subdomain: tamannasehrawat822
